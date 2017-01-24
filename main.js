@@ -10,12 +10,12 @@ var postData = {
     "IsGaoTie": false,
     "IsDongChe": false,
     "CatalogName": "",
-    "DepartureCity": "hangzhou",
-    "ArrivalCity": "shanghai",
+    "DepartureCity": "hangzhou", //可修改
+    "ArrivalCity": "quzhou", //可修改
     "HubCity": "",
-    "DepartureCityName": "杭州",
-    "ArrivalCityName": "上海",
-    "DepartureDate": "2017-01-25",
+    "DepartureCityName": "杭州", //可修改
+    "ArrivalCityName": "衢州", //可修改
+    "DepartureDate": process.argv[2],
     "DepartureDateReturn": "",
     "ArrivalDate": "",
     "TrainNumber": ""
@@ -41,8 +41,7 @@ function main() {
 function callback(error, response, body) {
     var list = JSON.parse(iconv.decode(body, "gb2312")).TrainItemsList;
     var newList = parseList(list);
-    console.log(newList);
-    //showList(newList);
+    showList(newList);
 }
 
 function parseList(list) {
@@ -59,6 +58,27 @@ function parseList(list) {
         }
     }
     return newList;
+}
+
+function showList(list) {
+    if (list.length === 0) {
+        console.log('No data found\n');
+    } else {
+        for (var i = 0; i < list.length; i++) {
+            var TrainName = list[i].TrainName;
+            var StartStationName = list[i].StartStationName;
+            var EndStationName = list[i].EndStationName;
+            var StratTime = list[i].StratTime;
+            var EndTime = list[i].EndTime;
+            var Seats = list[i].SeatBookingItem;
+            var str = '';
+            for (var j = 0; j < Seats.length; j++) {
+                str += Seats[j].SeatName + '(¥' + Seats[j].Price + ') : ' + Seats[j].Inventory + ' | ';
+            }
+            var train = '车次：' + TrainName + ' 开始：' + StartStationName + ' 到达：' + EndStationName + ' 发出时间：' + StratTime + ' 到达时间：' + EndTime + ' 余票：' + str + '\n';
+            console.log(train);
+        }
+    }
 }
 
 main();
