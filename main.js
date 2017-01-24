@@ -10,11 +10,11 @@ var postData = {
     "IsGaoTie": false,
     "IsDongChe": false,
     "CatalogName": "",
-    "DepartureCity": "hangzhou", //可修改
-    "ArrivalCity": "quzhou", //可修改
+    "DepartureCity": "quzhou", //可修改
+    "ArrivalCity": "hangzhou", //可修改
     "HubCity": "",
-    "DepartureCityName": "杭州", //可修改
-    "ArrivalCityName": "衢州", //可修改
+    "DepartureCityName": "衢州", //可修改
+    "ArrivalCityName": "杭州", //可修改
     "DepartureDate": process.argv[2],
     "DepartureDateReturn": "",
     "ArrivalDate": "",
@@ -34,7 +34,7 @@ var options = {
 };
 
 function main() {
-    console.log('\n 🚄  Search From:', new Date().toString());
+    console.log('\n 🚄  Search From:', new Date().toString(), '\n');
     request.post(options, callback);
 }
 
@@ -60,9 +60,21 @@ function parseList(list) {
     return newList;
 }
 
+function strFormat(str, len, code = 'en') {
+    var strLen = str.toString().length;
+    for(var i = 0; i < (len - strLen); i++){
+        if (code == 'en') {
+            str += ' ';
+        } else {
+            str += '  ';
+        }
+    }
+    return str;
+}
+
 function showList(list) {
     if (list.length === 0) {
-        console.log('No data found\n');
+        console.log('查询失败❗️\n');
     } else {
         for (var i = 0; i < list.length; i++) {
             var TrainName = list[i].TrainName;
@@ -73,9 +85,9 @@ function showList(list) {
             var Seats = list[i].SeatBookingItem;
             var str = '';
             for (var j = 0; j < Seats.length; j++) {
-                str += Seats[j].SeatName + '(¥' + Seats[j].Price + ') : ' + Seats[j].Inventory + ' | ';
+                str += Seats[j].SeatName + ': ' + strFormat(Seats[j].Inventory, 3) + ' | ';
             }
-            var train = '车次：' + TrainName + ' 开始：' + StartStationName + ' 到达：' + EndStationName + ' 发出时间：' + StratTime + ' 到达时间：' + EndTime + ' 余票：' + str + '\n';
+            var train = '车次：' + strFormat(TrainName, 5) + ' 开始：' + strFormat(StartStationName, 5, 'ch') + ' 到达：' + strFormat(EndStationName, 5, 'ch') + ' 发出时间：' + StratTime + '   到达时间：' + EndTime + '   余票：' + str + '\n';
             console.log(train);
         }
     }
