@@ -1,0 +1,14 @@
+{
+  "name": "ctrip-tickets-node",
+  "version": "1.0.0",
+  "description": "check trian tickets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yanm1ng",
+  "dependencies": {
+    "iconv-lite": "^0.4.15",
+    "request": "^2.79.0"
+  }
+}
