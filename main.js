@@ -40,8 +40,25 @@ function main() {
 
 function callback(error, response, body) {
     var list = JSON.parse(iconv.decode(body, "gb2312")).TrainItemsList;
-    console.log(list);
-    
+    var newList = parseList(list);
+    console.log(newList);
+    //showList(newList);
+}
+
+function parseList(list) {
+    var newList = [];
+
+    for (var i = 0; i < list.length; i++) {
+        var seats = list[i].SeatBookingItem;
+        var remain = 0;
+        for (var j = 0; j < seats.length; j++) {
+            remain += seats[j].Inventory;
+        }
+        if (remain > 0) {
+            newList.push(list[i]);
+        }
+    }
+    return newList;
 }
 
 main();
