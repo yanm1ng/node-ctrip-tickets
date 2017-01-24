@@ -1,5 +1,5 @@
 {
-  "name": "ctrip-tickets-node",
+  "name": "node-ctrip-tickets",
   "version": "1.0.0",
   "description": "check trian tickets",
   "main": "index.js",
