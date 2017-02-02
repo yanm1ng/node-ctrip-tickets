@@ -39,7 +39,7 @@ function main() {
 }
 
 function callback(error, response, body) {
-    var list = JSON.parse(iconv.decode(body, "gb2312")).TrainItemsList;
+    var list = JSON.parse(iconv.decode(body, 'gb2312')).TrainItemsList;
     var newList = parseList(list);
     showList(newList);
 }
