@@ -1,7 +1,23 @@
 var request = require('request');
 var iconv = require('iconv-lite');
+var city = require('./city');
 
 var url = 'http://trains.ctrip.com/TrainBooking/Ajax/SearchListHandler.ashx?Action=getSearchList';
+
+var [, , departureCity, arrivalCity, date] = process.argv;
+// 始发城市信息
+var departureInfo = city.filter((item) => {
+  return item.name === departureCity
+})
+// 终点城市信息
+var arrivalInfo = city.filter((item) => {
+  return item.name === arrivalCity
+})
+
+if (departureInfo.length === 0 || arrivalInfo.length === 0) {
+  console.log('❌城市名称错误');
+  process.exit()
+}
 
 var postData = {
   "IsBus": false,
@@ -10,12 +26,12 @@ var postData = {
   "IsGaoTie": false,
   "IsDongChe": false,
   "CatalogName": "",
-  "DepartureCity": "quzhou", //可修改
-  "ArrivalCity": "hangzhou", //可修改
+  "DepartureCity": departureInfo[0].pinyin.toLowerCase(), //可修改
+  "ArrivalCity": arrivalInfo[0].pinyin.toLowerCase(), //可修改
   "HubCity": "",
-  "DepartureCityName": "衢州", //可修改
-  "ArrivalCityName": "杭州", //可修改
-  "DepartureDate": process.argv[2],
+  "DepartureCityName": departureCity, //可修改
+  "ArrivalCityName": arrivalCity, //可修改
+  "DepartureDate": date,
   "DepartureDateReturn": "",
   "ArrivalDate": "",
   "TrainNumber": ""
@@ -74,7 +90,7 @@ function strFormat(str, len, code = 'en') {
 
 function showList(list) {
   if (list.length === 0) {
-    console.log('查询失败❗️\n');
+    console.log('查询失败/暂无列车信息❗️\n');
   } else {
     for (var i = 0; i < list.length; i++) {
       var TrainName = list[i].TrainName;
