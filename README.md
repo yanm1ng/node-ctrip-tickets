@@ -7,7 +7,12 @@
 
 ## 运行
 ```
-$ npm i
+$ npm install
+```
+
+修改 `main.js` 中的 `DepartureCity`, `ArrivalCity`, `DepartureCityName`, `ArrivalCityName` 四个参数
+
+```
 $ node main.js 2017-01-26
 ```
 
